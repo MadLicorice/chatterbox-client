@@ -27,12 +27,32 @@
     <div id="main">
       <h1>chatterbox</h1>
       <!-- Your HTML goes here! -->
+
       <form>
-        <input type="text" name="Send Message!">
+        <input type="text" name="Send Message!" id="sendIt">
       </form>
+      <button id="sendButton">"Send"</button>
+
       <span class="button sendButton">Send</span>
       <span class="button newRoomButton">Create New Room</span>
     </div>
     <div id="chats"></div>
   </body>
 </html>
+
+<script>
+
+$(document).ready(function() {
+  
+  $('#sendButton').on('click', function() {
+    var post = {
+      username: 'That one guy',
+      text: $('#sendIt').val(),
+      roomname: '',
+    };
+    app.send(post);
+  });
+});
+
+app.init();
+</script>
