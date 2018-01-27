@@ -91,7 +91,7 @@ describe('chatterbox', function() {
 
         expect($('#roomSelect').children().length).to.equal(1);
       });
-
+  
     });
 
     describe('events', function() {
