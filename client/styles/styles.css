@@ -87,4 +87,12 @@ form input[type=text] {
     color: #fff;
     background-color: #0090da;
 }
-
+#sendButton {
+    padding: 2%;
+    border-radius: 10px;
+    background-color: #f90;
+    cursor: pointer;
+}
+#sendButton:hover {
+background-color: #099;
+}
