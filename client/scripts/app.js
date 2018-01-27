@@ -16,10 +16,10 @@ var app = {
     app.handleSubmit();
     app.fetch();
     app.send();
-    //app.renderMessage();
+    //app.renderMessage(); 
   },
 
-  send: function(message) {
+  send: function(message) { 
     $.ajax({
       // This is the url you should use to communicate with the parse API server.
       url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',

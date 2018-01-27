@@ -103,7 +103,7 @@ describe('chatterbox', function() {
           text: 'I didn\'t get a harumph outa that guy.!',
           roomname: 'lobby'
         });
-
+ 
         app.init();
 
         $('#main').find('.username').trigger('click');
