@@ -1,14 +1,15 @@
 $(document).ready(function() {
   app.init();
 
-  
+  $('#sendButton').on('click', function() {
+    var post = {
+      username: 'That one guy',
+      text: $('#sendIt').val(),
+      roomname: '',
+    };
+    app.send(post);
   });
-
-// var message = {
-//   username: 'shawndrost',
-//   text: 'trololo',
-//   roomname: '4chan'
-// };
+});
 
 var app = {
   server: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
@@ -47,14 +48,9 @@ var app = {
       data: {order: '-createdAt'},
       contentType: 'application/json',
       success: function (data) {
-        //console.log(data);
         data.results.forEach(function(message) {
           app.renderMessage(message);
         });
-        // for (var i = 0; i < message.length; i++) {
-        //   app.renderMessage(messages[i]);
-        // }
-      
       },
     });
   },

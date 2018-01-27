@@ -39,20 +39,3 @@
     <div id="chats"></div>
   </body>
 </html>
-
-<script>
-
-$(document).ready(function() {
-  
-  $('#sendButton').on('click', function() {
-    var post = {
-      username: 'That one guy',
-      text: $('#sendIt').val(),
-      roomname: '',
-    };
-    app.send(post);
-  });
-});
-
-app.init();
-</script>
