@@ -78,7 +78,9 @@ var app = {
       if (!app.friends.includes(friend)) {
         app.friends.push(friend);
         $('.friendzone').append('<option>' + friend + ' </option>');
-        console.log('i am a username: ', username);
+        console.log('friend added: ', username);
+        //call function to use jQuery add a friend class to CSS
+        //friend class makes the stuff highlight
       }
     });
   },
@@ -119,9 +121,6 @@ var app = {
       console.log(room);
       app.fetchByRoom(room);
     });
-    // var room = $('.dropdown').val();
-    // app.clearMessages();
-    // app.fetchByRoom(room);
   },
 
   fetchByRoom: function(room) {
