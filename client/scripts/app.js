@@ -1,23 +1,17 @@
 $(document).ready(function() {
-  app.init();
-
-  $('#sendButton').on('click', function() {
-    var post = {
-      username: 'That one guy',
-      text: $('#sendIt').val(),
-      roomname: '',
-    };
-    app.send(post);
-  });
+  app.init();  
 });
 
 var app = {
   server: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
+  friends: [],
   
   init: function() {
     app.handleUsernameClick(); 
     app.handleSubmit();
     app.fetch();
+    app.getRooms();
+    app.callFetchByRoom();
   },
 
   send: function(message) { 
@@ -31,7 +25,7 @@ var app = {
         console.log('chatterbox: Message sent');
         app.clearMessages();
         app.fetch();
-        location.reload();
+        location.reload(true);
       },
       error: function (data) {
         // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -41,7 +35,7 @@ var app = {
     });
   },
 
-  fetch: function(url) {
+  fetch: function(room) {
     $.ajax({
       url: this.server,
       type: 'GET',
@@ -60,33 +54,93 @@ var app = {
   },
 
   renderMessage: function(message) {
-    // var $mess = $('<p class="message username"></p>');
-    // $mess.text(message);
-    // $('#chats').append($mess);
-    var mess = JSON.stringify(message.text);
-    var username = message.username;
-    var time = message.createdAt;
-    var roomName = message.roomname;
-    $('#chats').append('<p class="username">' + 'Name: ' + _.escape(username) + '</p>')
-     .append('<p class="username">' + 'Message: ' + _.escape(mess) + '</p>')
-     .append('<p class="username">' + 'Roomname: ' + _.escape(roomName) + '</p>')
-     .append('<p class="username">' + 'Time: ' + _.escape(time) + '</p>');
+    var mess = _.escape(message.text);
+    var username = _.escape(message.username);
+    var time = _.escape(message.createdAt);
+    var roomName = _.escape(message.roomname);
+    
+    var $messageContainer = $('<div class="messageContainer"></div>');
+    $($messageContainer).append('<p class="username">' + 'Name: ' + username + '</p>');
+    $($messageContainer).append('<p class="mess">' + 'Message: ' + mess + '</p>');
+    $($messageContainer).append('<p class="roomname">' + 'Roomname: ' + roomName + '</p>');    
+    $($messageContainer).append('<p class="time">' + 'Time: ' + time + '</p>');
+    $('#chats').append($messageContainer);
   },
 
   renderRoom: function(roomName) {
-    var newRoom = $('<div id="roomName"></div>');
-    $('#roomSelect').append(newRoom);
+    //var newRoom = $('<div id="roomName"></div>');
+    $('.dropdown').append('<option>' + roomName + ' </option>');
   },
 
-  handleUsernameClick: function() {
+  handleUsernameClick: function(username) { 
     $('body').on('click', '.username', function() {
+      var friend = $(this).text().slice(6);
+      if (!app.friends.includes(friend)) {
+        app.friends.push(friend);
+        $('.friendzone').append('<option>' + friend + ' </option>');
+        console.log('i am a username: ', username);
+      }
     });
   },
   
   handleSubmit: function() {
-    $('body').on('click', '.username', function() {
+    $('#sendButton').on('click', function() {
+      var post = {
+        username: 'Your secret admirer',
+        text: $('#sendIt').val(),
+        roomname: 'That one guy',
+      };
+      app.send(post);
     });
-  }
+  },
+  
+  getRooms: function() {
+    $.ajax({
+      url: this.server,
+      type: 'GET',
+      data: {order: '-createdAt'},
+      contentType: 'application/json',
+      success: function (data) {
+        var allRooms = _.uniq(data.results, false, function(message) {
+          return message.roomname;
+        }).map(function(properties) {
+          return properties.roomname;
+        });
+        allRooms.forEach(function(room) {
+          app.renderRoom(room);    
+        });
+      },
+    });
+  },
+
+  callFetchByRoom: function() {
+    $('.dropdown').change(function() {
+      var room = $(this).val();
+      console.log(room);
+      app.fetchByRoom(room);
+    });
+    // var room = $('.dropdown').val();
+    // app.clearMessages();
+    // app.fetchByRoom(room);
+  },
+
+  fetchByRoom: function(room) {
+    $.ajax({
+      url: this.server,
+      type: 'GET',
+      data: {
+        order: '-createdAt', 
+        where: '{"roomname": "' + room + '" }'
+      },
+      contentType: 'application/json',
+      success: function (data) {
+        app.clearMessages();
+        data.results.forEach(function(message) {
+          app.renderMessage(message);
+        });
+      },
+    });
+  },
 
 };
 

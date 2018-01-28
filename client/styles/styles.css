@@ -94,5 +94,37 @@ form input[type=text] {
     cursor: pointer;
 }
 #sendButton:hover {
-background-color: #099;
+    background-color: #099;
 }
+
+.messageContainer {
+    display: block;
+    width: 500px;
+    height: 200px;
+    border: 3px solid blue;
+    padding: 3px;
+    margin: 3px;
+}
+.username {
+    cursor: pointer;
+}
+
+/*.username {
+    width: 500px;
+    height: 300px;
+}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
